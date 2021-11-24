@@ -52,6 +52,22 @@ app.get(BASE_API_PATH + "/contacts", (req, res) => {
   });
 });
 
+app.delete(BASE_API_PATH + "/contacts", (req, res) => {
+  console.log(Date() + " - DELETE /contacts");
+
+  var contactName = req.body;
+
+  db.remove({name: contactName}, (err, numRemoved) => {
+    if (err) {
+      console.log(Date() + " - " + err);
+      res.sendStatus(500);
+    }else {
+      res.sendStatus(200);
+      console.log(Date() + " - DELETE /contacts - deleted " + numRemoved + " entities");
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
