@@ -52,12 +52,28 @@ app.get(BASE_API_PATH + "/contacts", (req, res) => {
   });
 });
 
+app.put(BASE_API_PATH + "/contacts", (req, res) => {
+  console.log(Date() + " - PUT /contacts");
+
+  var updContact = req.body;
+
+  db.update({ name: updContact.name }, {$set: { name: updContact.name, phone: updContact.phone }}, (err, numReplaced) => {
+    if (err) {
+      console.log(Date() + " - " + err);
+      res.sendStatus(500);
+    }else {
+      res.sendStatus(200);
+      console.log(Date() + " - Put /contacts - updated " + numReplaced + " entities");
+    }
+  });
+});
+
 app.delete(BASE_API_PATH + "/contacts", (req, res) => {
   console.log(Date() + " - DELETE /contacts");
 
   var contactName = req.body;
 
-  db.remove({name: contactName}, (err, numRemoved) => {
+  db.remove({name: contactName.name}, (err, numRemoved) => {
     if (err) {
       console.log(Date() + " - " + err);
       res.sendStatus(500);
