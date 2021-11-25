@@ -1,0 +1,5 @@
+tag: dev
+
+api:
+  replicaCOunt: 1
+  image: okteto.dev/api
