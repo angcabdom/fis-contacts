@@ -1,0 +1,23 @@
+name: Okteto Deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Okteto Login
+        uses: okteto/login@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEn}}
+          
+      - name: Okteto Pipeline
+        uses: okteto/pipeline@latest
+        with:
+          name: fis-contacts
+          namespace: angcabdom      
