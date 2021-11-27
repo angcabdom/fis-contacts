@@ -1,8 +1,21 @@
 const mongoose = require('mongoose');
 
 const contactSchema = new mongoose.Schema({
-    name: String, 
-    phone: Number
+    name:  {
+        type: String,
+        required: [true, 'User name required'],
+        unique: true
+    }, 
+    phone: {
+        type: Number,
+        validate: {
+          validator: function(v) {
+            return /\d{9}/.test(v);
+          },
+          message: props => `${props.value} is not a valid phone number`
+        },
+        required: [true, 'User phone number required']
+      }
 });
 
 contactSchema.methods.cleanup = function() {
@@ -11,4 +24,4 @@ contactSchema.methods.cleanup = function() {
 
 const Contact = mongoose.model('Contact', contactSchema);
 
-module.exports = Contact
+module.exports = Contact;

@@ -17,7 +17,7 @@ app.get(BASE_API_PATH + "/contacts", (req, res) => {
     Contact.find({}, (err, contacts) => {
         if (err) {
             console.log(Date() + "-" + err);
-            res.sendStatus(500);
+            res.sendStatus(400);
         } else {
             res.send(contacts.map((contact) => {
                 return contact.cleanup();
@@ -34,7 +34,8 @@ app.post(BASE_API_PATH + "/contacts", (req, res) => {
         if (err) {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
-        } else {
+        } 
+        else {
             res.sendStatus(201);
         }
     });
