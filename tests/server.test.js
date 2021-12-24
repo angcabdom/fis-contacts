@@ -1,5 +1,5 @@
 const app = require('../server.js');
-const db = require('../db.js');
+const Contact = require('../contacts.js');
 const request = require('supertest');
 
 
@@ -29,11 +29,11 @@ describe("Contacts API", () => {
 
         beforeAll(() => {
             const contacts = [
-                {"name": "juan", "phone": "123456789"},
-                {"name": "pepe", "phone": "987654321"}
+                new Contact({"name": "juan", "phone": "123456789"}),
+                new Contact({"name": "pepe", "phone": "987654321"})
             ];
 
-            dbFind = jest.spyOn(db,"find");
+            dbFind = jest.spyOn(Contact,"find");
             dbFind.mockImplementation((query, callback) => {
                 callback(null, contacts);
             })
@@ -53,7 +53,7 @@ describe("Contacts API", () => {
         let dbInsert;
 
         beforeEach(() => {
-            dbInsert = jest.spyOn(db, "insert");
+            dbInsert = jest.spyOn(Contact, "create");
         });
 
         it("Should add a new contact if everything is fine", () => {
@@ -63,7 +63,7 @@ describe("Contacts API", () => {
 
             return request(app).post("/api/v1/contacts").send(contact).then((response) => {
                 expect(response.statusCode).toBe(201);
-                expect(dbFind).toBeCalledWith(contact, expect.any(Function));
+                expect(dbInsert).toBeCalledWith(contact, expect.any(Function));
             });
         });
 
