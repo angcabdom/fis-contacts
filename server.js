@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 const Contact = require('./contacts');
+const passport = require('passport');
+require('./passport.js')
 
 var BASE_API_PATH = "/api/v1";
 
@@ -11,7 +13,9 @@ app.get("/", (req, res) => {
     res.send("<html><body><h1>My server</h1></body></html>");
 });
 
-app.get(BASE_API_PATH + "/contacts", (req, res) => {
+app.get(BASE_API_PATH + "/contacts", 
+passport.authenticate('localapikey', {session:false}),
+(req, res) => {
     console.log(Date() + " - GET /contacts");
 
     Contact.find({}, (err, contacts) => {
