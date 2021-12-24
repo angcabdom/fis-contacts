@@ -1,5 +1,10 @@
 language: node_js
 node_js:
   - "9"
+services:
+  - docker
+  - mongodb
 install:
   - npm install
+script:
+  - docker build -t contacts .
